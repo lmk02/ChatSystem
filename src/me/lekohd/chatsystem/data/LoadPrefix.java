@@ -68,6 +68,7 @@ public class LoadPrefix {
                 }
                 prefixes.put(name, prefix);
             }
+        
             sql.closeRessources(rs, st);
         return prefixes;
     }
