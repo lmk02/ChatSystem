@@ -22,8 +22,7 @@ public class LoadPrefix {
         plugin = pl;
     }
 
-    public HashMap<String, String> getPlayerAndPrefix()
-    {
+    public HashMap<String, String> getPlayerAndPrefix() throws SQLException {
         MySQL sql = plugin.getSql();
         Connection conn = sql.getConnection();
         ResultSet rs = null;
@@ -33,7 +32,6 @@ public class LoadPrefix {
         String prefix = null;
         ArrayList<String> unis = new ArrayList<String>();
         HashMap<String, String> prefixes = new HashMap<String, String>();
-        try {
             for(int i = 0; i< 1000; i++)
             {
                 st = conn.prepareStatement("SELECT * FROM permissions_inheritance WHERE id=?");
@@ -61,20 +59,16 @@ public class LoadPrefix {
                 }
                 else
                 {
-                    st = conn.prepareStatement("SELECT * FROM permissions_entity WHERE name=?");
+                    st = conn.prepareStatement("SELECT * FROM permissions WHERE name=? AND permission=?");
                     st.setString(1, group);
+                    st.setString(2, "prefix");
                     rs = st.executeQuery();
                     rs.first();
-                    prefix = rs.getString("prefix");
+                    prefix = rs.getString("value");
                 }
                 prefixes.put(name, prefix);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
             sql.closeRessources(rs, st);
-        }
         return prefixes;
     }
 

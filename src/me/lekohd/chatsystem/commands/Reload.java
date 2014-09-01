@@ -5,6 +5,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
+import java.sql.SQLException;
+
 /**
  * Created by Leon on 01.09.2014.
  */
@@ -27,8 +29,13 @@ public class Reload extends Command {
             {
                 p.sendMessage("Open Connection to Database.");
                 p.sendMessage("Downloading Data.");
-                plugin.reloadLp();
                 p.sendMessage("Completed.");
+                try {
+                    plugin.reloadLp();
+                    p.sendMessage("Failed to load Data.");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return;
             }
             else

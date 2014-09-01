@@ -1,5 +1,6 @@
 package me.lekohd.chatsystem;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import me.lekohd.chatsystem.commands.*;
@@ -39,8 +40,13 @@ public class ChatSystem extends Plugin {
           }
           System.out.println("Loading Data... May take a few seconds");
           lp = new LoadPrefix(this);
-          playerAndPrefix = lp.getPlayerAndPrefix();
-          System.out.println("Loaded all Data!");
+          try {
+              playerAndPrefix = lp.getPlayerAndPrefix();
+              System.out.println("Loaded all Data!");
+          } catch (SQLException e) {
+              System.out.println("Failed to load all Data!");
+              e.printStackTrace();
+          }
           System.out.println("#########################################################");
 
           this.getProxy().getPluginManager().registerCommand(this, new Message());
@@ -69,8 +75,7 @@ public class ChatSystem extends Plugin {
     {
         return sql;
     }
-    public void reloadLp()
-    {
+    public void reloadLp() throws SQLException {
         playerAndPrefix = lp.getPlayerAndPrefix();
     }
 }
