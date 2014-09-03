@@ -23,6 +23,7 @@ public class ChatSystem extends Plugin {
 	public static HashMap<String, Boolean> inStaffChat = new HashMap<String, Boolean>();
     public static HashMap<String, Boolean> isMuted = new HashMap<String, Boolean>();
     public static HashMap<String, String> playerAndPrefix = new HashMap<String, String>();
+    public static HashMap<String, String> getLastChatPlayer = new HashMap<String, String>();
     public MySQL sql;
     public LoadPrefix lp;
 	

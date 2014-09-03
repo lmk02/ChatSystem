@@ -17,7 +17,7 @@ import net.md_5.bungee.command.ConsoleCommandSender;
 
 public class Message extends Command {
 
-	public static String[] alias = {"msg", "m", "whisper", "w", "r", "tell", "t"};
+	public static String[] alias = {"msg", "m", "whisper", "w", "tell", "t"};
 	
 	public Message() {
 		super("message", null, alias);
@@ -78,6 +78,7 @@ public class Message extends Command {
 	    			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[0]);
 	    			p.sendMessage("§7[Ich -> " + getRealName(args[0]) + "]§r" + message);
 	    			target.sendMessage("§7[" + p.getName() + " -> Mich]§r" + message);
+                    ChatSystem.getLastChatPlayer.put(getRealName(args[0]), p.getName());
 	    		}
 	    		else
 	    		{

@@ -42,7 +42,7 @@ public class MessageStaffChat extends Command {
 	    				message = message + " " + args[i];
 	    		}
 	    		message = translateColorCodes(message);
-	    		p.sendMessage("§7[Ich -> StaffChat]§r " + message);
+	    		p.sendMessage("§a[SC§a]§2" + p.getName() + "§2: §c" + message);
 	    		for(ProxiedPlayer players : ProxyServer.getInstance().getPlayers())
 				{
 					if(ChatSystem.inStaffChat.get(players.getName()) == true)

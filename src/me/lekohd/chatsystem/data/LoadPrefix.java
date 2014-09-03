@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * Created by Leon on 01.09.2014.
@@ -32,44 +31,44 @@ public class LoadPrefix {
         String prefix = null;
         ArrayList<String> unis = new ArrayList<String>();
         HashMap<String, String> prefixes = new HashMap<String, String>();
-            for(int i = 0; i< 1000; i++)
+        for(int i = 0; i< 1000; i++)
+        {
+            st = conn.prepareStatement("SELECT * FROM permissions_inheritance WHERE id=?");
+            st.setString(1, i+"");
+            rs = st.executeQuery();
+            rs.last();
+            if(rs.getRow() == 0)
             {
-                st = conn.prepareStatement("SELECT * FROM permissions_inheritance WHERE id=?");
-                st.setString(1, i+"");
-                rs = st.executeQuery();
-                rs.last();
-                if(rs.getRow() == 0)
-                {
-                    continue;
-                }
-                rs.first();
-                uni = rs.getString("child");
-                unis.add(uni);
+                continue;
             }
-            for(String name : unis)
+            rs.first();
+            uni = rs.getString("child");
+            unis.add(uni);
+        }
+        for(String name : unis)
+        {
+            st = conn.prepareStatement("SELECT * FROM permissions_inheritance WHERE child=?");
+            st.setString(1, name);
+            rs = st.executeQuery();
+            rs.first();
+            group = rs.getString("parent");
+            if(group == null)
             {
-                st = conn.prepareStatement("SELECT * FROM permissions_inheritance WHERE child=?");
-                st.setString(1, name);
+                prefix="";
+            }
+            else
+            {
+                st = conn.prepareStatement("SELECT * FROM permissions WHERE name=? AND permission=?");
+                st.setString(1, group);
+                st.setString(2, "prefix");
                 rs = st.executeQuery();
                 rs.first();
-                group = rs.getString("parent");
-                if(group == null)
-                {
-                    prefix="";
-                }
-                else
-                {
-                    st = conn.prepareStatement("SELECT * FROM permissions WHERE name=? AND permission=?");
-                    st.setString(1, group);
-                    st.setString(2, "prefix");
-                    rs = st.executeQuery();
-                    rs.first();
-                    prefix = rs.getString("value");
-                }
-                prefixes.put(name, prefix);
+                prefix = rs.getString("value");
             }
-        
-            sql.closeRessources(rs, st);
+            prefixes.put(name, prefix);
+        }
+
+        sql.closeRessources(rs, st);
         return prefixes;
     }
 
